@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Sửa xe Bus</title>
+    <meta charset="UTF-8">
+</head>
+<body>
+<h1>Sửa thông tin xe Bus</h1>
+<form th:action="@{/update}" method="post" th:object="${bus}" enctype="multipart/form-data">
+    <input type="hidden" th:field="*{id}">
+
+    <label>Biển số xe:</label>
+    <input type="text" th:field="*{licensePlate}" required><br>
+    <span th:if="${#fields.hasErrors('licensePlate')}" th:errors="*{licensePlate}"></span><br>
+
+    <label>Loại xe:</label>
+    <select th:field="*{busType}">
+        <option value="vip">Vip</option>
+        <option value="luxury">Luxury</option>
+        <option value="normal">Normal</option>
+    </select><br>
+    <span th:if="${#fields.hasErrors('busType')}" th:errors="*{busType}"></span><br>
+
+    <label>Số hàng ghế:</label>
+    <input type="number" th:field="*{rowSeat}" min="1" required><br>
+    <span th:if="${#fields.hasErrors('rowSeat')}" th:errors="*{rowSeat}"></span><br>
+
+    <label>Số cột ghế:</label>
+    <input type="number" th:field="*{colSeat}" min="1" required><br>
+    <span th:if="${#fields.hasErrors('colSeat')}" th:errors="*{colSeat}"></span><br>
+
+    <label>Ảnh xe:</label>
+    <input type="file" th:field="*{image}"><br>
+    <span th:if="${#fields.hasErrors('image')}" th:errors="*{image}"></span><br>
+
+    <button type="submit">Cập nhật</button>
+    <a th:href="@{/bus}">Quay lại</a>
+</form>
+</body>
+</html>

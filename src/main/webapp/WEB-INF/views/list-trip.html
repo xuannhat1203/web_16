@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Danh sách chuyến đi</title>
+    <meta charset="UTF-8">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .pagination {
+            margin-top: 20px;
+        }
+        .pagination a {
+            margin: 0 5px;
+            text-decoration: none;
+            padding: 5px 10px;
+            border: 1px solid #ddd;
+        }
+        .pagination a:hover {
+            background-color: #f2f2f2;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group input {
+            padding: 5px;
+            width: 200px;
+        }
+        .error {
+            color: red;
+            font-size: 0.9em;
+        }
+        .action-link {
+            margin-right: 10px;
+            text-decoration: none;
+            color: blue;
+        }
+        .action-link:hover {
+            text-decoration: underline;
+        }
+        button {
+            padding: 5px 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+<h2>Danh sách chuyến đi</h2>
+<div th:if="${error}" class="error" th:text="${error}"></div>
+<form th:action="@{/trips}" method="get" class="form-group">
+    <label>Điểm khởi hành:</label>
+    <input type="text" name="departure" th:value="${departure}"/>
+    <label>Điểm đến:</label>
+    <input type="text" name="destination" th:value="${destination}"/>
+    <button type="submit">Tìm kiếm</button>
+</form>
+<a th:href="@{/addTrip}" class="action-link">Thêm chuyến đi mới</a>
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Điểm khởi hành</th>
+        <th>Điểm đến</th>
+        <th>Thời gian khởi hành</th>
+        <th>Thời gian đến</th>
+        <th>ID xe</th>
+        <th>Số ghế khả dụng</th>
+        <th>Hình ảnh</th>
+        <th>Hành động</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="trip : ${trips}">
+        <td th:text="${trip.id}"></td>
+        <td th:text="${trip.departurePoint}"></td>
+        <td th:text="${trip.destination}"></td>
+        <td th:text="${trip.departureTime}"></td>
+        <td th:text="${trip.arrivalTime}"></td>
+        <td th:text="${trip.busId}"></td>
+        <td th:text="${trip.seatsAvailable}"></td>
+        <td><img th:src="${trip.image}" width="100" alt="Trip Image"></td>
+        <td>
+            <a th:href="@{/trip/edit/{id}(id=${trip.id})}" class="action-link">Sửa</a>
+            <a th:href="@{/trip/delete/{id}(id=${trip.id})}" class="action-link"
+               onclick="return confirm('Bạn chắc chắn muốn xóa chuyến đi này?')">Xóa</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<div class="pagination">
+    <span th:text="'Trang ' + ${currentPage} + ' / ' + ${totalPages}"></span>
+    <a th:if="${currentPage > 1}"
+       th:href="@{/trips(page=${currentPage - 1}, departure=${departure}, destination=${destination})}">Trước</a>
+    <a th:if="${currentPage < totalPages}"
+       th:href="@{/trips(page=${currentPage + 1}, departure=${departure}, destination=${destination})}">Sau</a>
+</div>
+</body>
+</html>

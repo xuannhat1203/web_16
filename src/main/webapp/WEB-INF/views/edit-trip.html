@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:form="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Sửa chuyến xe</title>
+</head>
+<body>
+<h1>Sửa thông tin chuyến xe</h1>
+
+<form th:action="@{/trip/edit/{id}(id=${trip.id})}" th:object="${trip}" method="post" enctype="multipart/form-data" accept-charset="UTF-8">
+    <input type="hidden" th:field="*{id}" />
+
+    <div>
+        <label>Điểm đi:</label>
+        <input type="text" th:field="*{departurePoint}" />
+        <div th:if="${#fields.hasErrors('departurePoint')}" th:errors="*{departurePoint}"></div>
+    </div>
+
+    <div>
+        <label>Điểm đến:</label>
+        <input type="text" th:field="*{destination}" />
+        <div th:if="${#fields.hasErrors('destination')}" th:errors="*{destination}"></div>
+    </div>
+
+    <div>
+        <label>Giờ khởi hành:</label>
+        <input type="datetime-local" th:field="*{departureTime}" />
+        <div th:if="${#fields.hasErrors('departureTime')}" th:errors="*{departureTime}"></div>
+    </div>
+
+    <div>
+        <label>Giờ đến:</label>
+        <input type="datetime-local" th:field="*{arrivalTime}" />
+        <div th:if="${#fields.hasErrors('arrivalTime')}" th:errors="*{arrivalTime}"></div>
+    </div>
+
+    <div>
+        <label>Xe (Bus ID):</label>
+        <input type="number" th:field="*{busId}" />
+        <div th:if="${#fields.hasErrors('busId')}" th:errors="*{busId}"></div>
+    </div>
+
+    <div>
+        <label>Số ghế còn trống:</label>
+        <input type="number" th:field="*{seatsAvailable}" />
+        <div th:if="${#fields.hasErrors('seatsAvailable')}" th:errors="*{seatsAvailable}"></div>
+    </div>
+
+    <div>
+        <label>Ảnh chuyến đi (để trống nếu không thay đổi):</label>
+        <input type="file" th:field="*{image}" />
+    </div>
+
+    <div>
+        <img th:if="${trip.image != null}" th:src="@{${trip.image}}" alt="Ảnh hiện tại" width="150" />
+    </div>
+
+    <div th:if="${error}">
+        <p style="color:red" th:text="${error}"></p>
+    </div>
+    <div th:if="${message}">
+        <p style="color:red" th:text="${message}"></p>
+    </div>
+
+    <div>
+        <button type="submit">Cập nhật chuyến đi</button>
+        <a href="/trips">Quay lại danh sách</a>
+    </div>
+</form>
+</body>
+</html>

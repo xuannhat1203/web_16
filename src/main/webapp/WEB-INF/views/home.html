@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Danh sách chuyến đi</title>
+    <meta charset="UTF-8">
+</head>
+<body>
+<h1>Danh sách chuyến đi</h1>
+<form th:action="@{/trips}" method="get">
+    <label>Điểm khởi hành:</label>
+    <input type="text" name="departure" th:value="${departure}"/>
+    <label>Điểm đến:</label>
+    <input type="text" name="destination" th:value="${destination}"/>
+    <button type="submit">Tìm kiếm</button>
+</form>
+<a th:href="@{/addTrip}">Thêm chuyến đi mới</a>
+<table border="1">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Điểm khởi hành</th>
+        <th>Điểm đến</th>
+        <th>Thời gian khởi hành</th>
+        <th>Thời gian đến</th>
+        <th>ID xe</th>
+        <th>Số ghế khả dụng</th>
+        <th>Hình ảnh</th>
+        <th>Hành động</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="trip : ${trips}">
+        <td th:text="${trip.id}"></td>
+        <td th:text="${trip.departurePoint}"></td>
+        <td th:text="${trip.destination}"></td>
+        <td th:text="${trip.departureTime}"></td>
+        <td th:text="${trip.arrivalTime}"></td>
+        <td th:text="${trip.busId}"></td>
+        <td th:text="${trip.seatsAvailable}"></td>
+        <td><img th:src="${trip.image}" width="100"></td>
+        <td>
+            <a th:href="@{/trip/edit/{id}(id=${trip.id})}">Sửa</a>
+            <a th:href="@{/trip/delete/{id}(id=${trip.id})}" onclick="return confirm('Bạn chắc chắn muốn xóa?')">Xóa</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<div>
+    <span th:text="'Trang ' + ${currentPage} + ' / ' + ${totalPages}"></span>
+    <a th:if="${currentPage > 1}" th:href="@{/trips(page=${currentPage - 1}, departure=${departure}, destination=${destination})}">Trước</a>
+    <a th:if="${currentPage < totalPages}" th:href="@{/trips(page=${currentPage + 1}, departure=${departure}, destination=${destination})}">Sau</a>
+</div>
+<div th:if="${error}" th:text="${error}"></div>
+</body>
+</html>

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Thêm chuyến đi mới</title>
+    <meta charset="UTF-8">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: inline-block;
+            width: 150px;
+        }
+        .form-group input, .form-group select {
+            padding: 5px;
+            width: 250px;
+        }
+        .error {
+            color: red;
+            font-size: 0.9em;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+<h2>Thêm chuyến đi mới</h2>
+<div th:if="${error}" class="error" th:text="${error}"></div>
+<form th:action="@{/addTrip}" th:object="${trip}" method="post" enctype="multipart/form-data">
+    <div class="form-group">
+        <label for="departurePoint">Điểm khởi hành:</label>
+        <input type="text" id="departurePoint" th:field="*{departurePoint}" />
+        <span th:if="${#fields.hasErrors('departurePoint')}" th:errors="*{departurePoint}" class="error"></span>
+    </div>
+    <div class="form-group">
+        <label for="destination">Điểm đến:</label>
+        <input type="text" id="destination" th:field="*{destination}" />
+        <span th:if="${#fields.hasErrors('destination')}" th:errors="*{destination}" class="error"></span>
+    </div>
+    <div class="form-group">
+        <label for="departureTime">Thời gian khởi hành:</label>
+        <input type="datetime-local" id="departureTime" th:field="*{departureTime}" />
+        <span th:if="${#fields.hasErrors('departureTime')}" th:errors="*{departureTime}" class="error"></span>
+    </div>
+    <div class="form-group">
+        <label for="arrivalTime">Thời gian đến:</label>
+        <input type="datetime-local" id="arrivalTime" th:field="*{arrivalTime}" />
+        <span th:if="${#fields.hasErrors('arrivalTime')}" th:errors="*{arrivalTime}" class="error"></span>
+    </div>
+    <div class="form-group">
+        <label for="busId">ID xe:</label>
+        <input type="number" id="busId" th:field="*{busId}" min="1" />
+        <span th:if="${#fields.hasErrors('busId')}" th:errors="*{busId}" class="error"></span>
+    </div>
+    <div class="form-group">
+        <label for="seatsAvailable">Số ghế khả dụng:</label>
+        <input type="number" id="seatsAvailable" th:field="*{seatsAvailable}" value="0" min="0" />
+        <span th:if="${#fields.hasErrors('seatsAvailable')}" th:errors="*{seatsAvailable}" class="error"></span>
+    </div>
+    <div class="form-group">
+        <label for="image">Hình ảnh:</label>
+        <input type="file" id="image" th:field="*{image}" name="image" accept="image/*" />
+        <span th:if="${#fields.hasErrors('image')}" th:errors="*{image}" class="error"></span>
+    </div>
+    <div th:if="${#fields.hasErrors('')}" class="error" th:errors="*{}"></div>
+    <div class="form-group">
+        <button type="submit">Thêm chuyến đi</button>
+        <a th:href="@{/trips}">Quay lại</a>
+    </div>
+</form>
+</body>
+</html>
